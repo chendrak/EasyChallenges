@@ -1,0 +1,77 @@
+name: Update schema
+
+on:
+  push:
+    branches: [ "master" ]
+    tags:
+      - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      deployments: write
+      id-token: write
+      issues: write
+      discussions: write
+      packages: write
+      pages: write
+      pull-requests: write
+      repository-projects: write
+      security-events: write
+      statuses: write
+    environment:
+     name: github-pages
+     url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Pull Cached NuGet Restore Data
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Restore dependencies
+        run: |
+          dotnet restore
+      - name: Restore tools
+        run: |
+          dotnet tool restore
+      - name: Format code
+        continue-on-error: true
+        run: |
+          dotnet dotnet-format
+      - name: Build local tools
+        run: |
+          dotnet build --nologo  /p:WarningLevel=0
+      - name: Generate schema file
+        run: |
+          dotnet run --project EasyCards.JsonSchemaGenerator -- "$(pwd)/docs/schema.json"
+          dotnet run --project EasyCards.JsonSchemaGenerator -- "$(pwd)/docs/schema.${{ github.run_number }}.json"
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          commit_message: Card schema update
+          commit_user_name: GitHub Actions Schema Generator
+      - uses: actions/upload-pages-artifact@main
+        with:
+          path: "docs/"
+          retention-days: 1
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main

@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Description>Custom Challenges Made Easy</Description>
+        <Version>1.0.0</Version>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>EasyChallenges</RootNamespace>
+        <PackageVersion>1.0.0</PackageVersion>
+        <Nullable>enable</Nullable>
+        <Authors>chendrak</Authors>
+        <PackageId>EasyChallenges</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.*" IncludeAssets="compile" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+        <PackageReference Include="RogueGenesia.Mod" Version="1.0.*" IncludeAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\EasyChallenges.Models\EasyChallenges.Models.csproj" />
+        <ProjectReference Include="..\EasyChallenges.Common\EasyChallenges.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="ModManager.RogueGenesiaMod">
+        <HintPath>Libraries\ModManager.RogueGenesiaMod.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Logging" />
+    </ItemGroup>
+
+    <Target Name="PostPublishCleanup" AfterTargets="Publish">
+        <ItemGroup>
+            <!-- These are files that are unnecessary for the game, or are just not needed -->
+            <FilesToDelete Include="$(PublishDir)0Harmony.dll" />
+            <FilesToDelete Include="$(PublishDir)*Il2Cpp*.dll" />
+            <FilesToDelete Include="$(PublishDir)*Unity*.dll" />
+            <FilesToDelete Include="$(PublishDir)Mono.*.dll" />
+            <FilesToDelete Include="$(PublishDir)MonoMod.*.dll" />
+            <FilesToDelete Include="$(PublishDir)RogueGenesia.dll" />
+            <FilesToDelete Include="$(PublishDir)ModGenesia*.dll" />
+            <FilesToDelete Include="$(PublishDir)RogueGenesia*.dll" />
+            <FilesToDelete Include="$(PublishDir)Newtonsoft.Json.dll" />
+            <FilesToDelete Include="$(PublishDir)Iced.dll" />
+            <FilesToDelete Include="$(PublishDir)Microsoft*.dll" />
+            <!-- This is skipped in debug configuration, to make debugging plugins easier -->
+            <FilesToDelete Include="$(PublishDir)*.pdb" Condition="'$(Configuration)' == 'Release'" />
+            <FilesToDelete Include="$(PublishDir)*.deps.json" />
+        </ItemGroup>
+        <Message Text="Deleting references and debug symbols from publish output" Importance="high" />
+        <Delete Files="@(FilesToDelete)" />
+    </Target>
+<!--    <Target Name="GenerateJsonSchema" AfterTargets="Publish">-->
+<!--        <Exec Command="$(ProjectDir)..\EasyChallenges.JsonSchemaGenerator\bin\$(Configuration)\net6.0\EasyChallenges.JsonSchemaGenerator $(PublishDir)Documentation\schema.json" ConsoleToMSBuild="true" />-->
+<!--    </Target>-->
+</Project>
