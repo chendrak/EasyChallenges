@@ -53,7 +53,7 @@ public static class ChallengeLoader
 
         foreach (var template in templateFile.Challenges)
         {
-            Log.Info($"Attempting to add {template.Name}. Challenges before: {GameData.ChallengesList.Count}");
+            Log.Info($"Attempting to add {template.Name}");
             try
             {
                 var challengeModifier = template.ChallengeModifier.ToChallengeModifier();
@@ -65,13 +65,7 @@ public static class ChallengeLoader
                     template.Order
                 );
 
-                Log.Info($"Challenges after {GameData.ChallengesList.Count}");
-
-                GameData.ChallengesList = GameData.ChallengesList.AddItem(challengeSO).ToList().ToIl2CppReferenceArray();
-
                 Log.Info($"Added challenge {template.Name}: {Log.StructToString(challengeSO)}");
-                Log.Info($"Challenges after 2: {GameData.ChallengesList.Count}");
-
                 successFullyLoadedChallenges.Add(template.Name, template);
             }
             catch (Exception ex)
@@ -79,6 +73,12 @@ public static class ChallengeLoader
                 challengesThatFailedToLoad.Add(template.Name, template);
                 Log.Error($"Error adding {template.Name}: {ex}");
             }
+        }
+
+        Log.Info("Listing challenges:");
+        foreach (var challengeSo in GameData.GetAllChallenges())
+        {
+            Log.Info($"challenge {challengeSo.name}: {Log.StructToString(challengeSo)}");
         }
     }
 }
