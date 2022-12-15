@@ -1,6 +1,6 @@
 namespace EasyChallenges.Models.Templates;
 
-using EasyChallenges.Models.Templates.Generated;
+using Generated;
 
 public class ModifierTemplate
 {

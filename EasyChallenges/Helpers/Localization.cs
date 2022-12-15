@@ -37,11 +37,7 @@ public static class Localization
 
     public static List<LocalizationData> GetNameTranslations(ChallengeTemplate challengeTemplate) => GetTranslations(challengeTemplate.NameLocalization);
 
-
-    // public static List<LocalizationData> GetDescriptionTranslations(CardTemplate cardTemplate)
-    // {
-    //     return GetTranslations(cardTemplate.DescriptionLocalization);
-    // }
+    public static List<LocalizationData> GetChallengeDescriptionTranslations(ChallengeDescriptionTemplate descriptionTemplate) => GetTranslations(descriptionTemplate.Localizations);
 
     private static UnityEngine.Localization.Locale GetLocaleForKey(string localizationKey)
     {

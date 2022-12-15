@@ -8,13 +8,15 @@ public class ChallengeTemplate
 
     public Dictionary<string, string> NameLocalization { get; set; } = new();
 
-    public EDifficulty Difficulty;
+    public List<ChallengeDescriptionTemplate> Descriptions { get; set; } = new();
+
+    public EDifficulty Difficulty = EDifficulty.F;
 
     public ChallengeModifierTemplate ChallengeModifier;
 
-    public float SoulCoinModifier;
+    public float SoulCoinModifier = 1.0f;
 
-    public int Order;
+    public int Order = 9;
 
     public bool IsHardMode;
 }

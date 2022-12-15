@@ -1,4 +1,4 @@
-$modname = "EasyCards"
+$modname = "EasyChallenges"
 
 dotnet publish "$modname\$modname.csproj" --configuration Release
 

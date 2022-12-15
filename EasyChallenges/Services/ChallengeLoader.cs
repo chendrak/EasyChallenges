@@ -3,10 +3,9 @@ namespace EasyChallenges.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using Common;
 using Common.Extensions;
 using Common.Logging;
-using HarmonyLib;
 using Helpers;
 using Models.Templates;
 using ModGenesia;
@@ -35,6 +34,16 @@ public static class ChallengeLoader
         }
     }
 
+    private static CustomChallengeDescription GetModSourceDescription(string challengeName, string modSource) =>
+        new() {
+            DescriptionType = CustomChallengeDescription.EDescriptionType.Negative,
+            Key = $"{challengeName}_ModSource",
+            localization = Localization.GetTranslations(new()
+            {
+                ["en"] = $"Mod: {modSource}"
+            }).ToIl2CppList()
+        };
+
     private static void AddChallengesFromFile(string fileName, string assetBasePath)
     {
         if (!File.Exists(fileName))
@@ -49,23 +58,35 @@ public static class ChallengeLoader
 
         Log.Info($"Loaded {templateFile.Challenges.Count} challenges");
 
-        var modSource = templateFile.ModSource ?? MyPluginInfo.PLUGIN_NAME;
-
+        var modSource = templateFile.ModSource ?? ModInfo.ModName;
         foreach (var template in templateFile.Challenges)
         {
             Log.Info($"Attempting to add {template.Name}");
+            var descCnt = 0;
+            var challengeDescriptions = template.Descriptions.ConvertAll(descriptionTemplate => new CustomChallengeDescription
+            {
+                DescriptionType = descriptionTemplate.Type,
+                Key = $"{template.Name}_{descCnt++}",
+                localization = Localization.GetChallengeDescriptionTranslations(descriptionTemplate).ToIl2CppList()
+            }).ToIl2CppList();
+
+            var modNameChallengeDescription = GetModSourceDescription(template.Name, modSource);
+
+            challengeDescriptions.Add(modNameChallengeDescription);
+
             try
             {
                 var challengeModifier = template.ChallengeModifier.ToChallengeModifier();
-                var challengeSO = ModGenesia.AddCustomChallenge(
+                ChallengeAPI.AddCustomChallenge(
                     template.Name, template.Difficulty,
                     template.SoulCoinModifier,
                     challengeModifier, template.IsHardMode,
                     Localization.GetNameTranslations(template).ToIl2CppList(),
-                    template.Order
+                    template.Order,
+                    challengeDescriptions
                 );
 
-                Log.Info($"Added challenge {template.Name}: {Log.StructToString(challengeSO)}");
+                Log.Info($"Added challenge {template.Name}");
                 successFullyLoadedChallenges.Add(template.Name, template);
             }
             catch (Exception ex)
@@ -73,12 +94,6 @@ public static class ChallengeLoader
                 challengesThatFailedToLoad.Add(template.Name, template);
                 Log.Error($"Error adding {template.Name}: {ex}");
             }
-        }
-
-        Log.Info("Listing challenges:");
-        foreach (var challengeSo in GameData.GetAllChallenges())
-        {
-            Log.Info($"challenge {challengeSo.name}: {Log.StructToString(challengeSo)}");
         }
     }
 }
