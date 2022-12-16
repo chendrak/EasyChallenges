@@ -43,6 +43,10 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
       // Required
       "Difficulty": "F",
       
+      // The maximum allowed soul shop tier for your run.
+      // Optional, Default is MAX
+      "MaxAllowedSoulShopTier": "F",
+      
       // Where should your challenge show in the list? Higher numbers will
       // result in your challenge being shown further down the list
       // Optional, defaults to 9
@@ -171,6 +175,11 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 The game difficulty this game should be displayed under.
 
 Possible values: `F`, `E`, `D`, `C`, `B`, `A`, `S`
+
+### MaxAllowedSoulShopTier
+The game difficulty this game should be displayed under.
+
+Possible values: `None`, `F`, `E`, `D`, `C`, `B`, `A`, `S`, `MAX`
 
 ### SoulCoinModifier
 A basic multiplier for the soul coins earned.
