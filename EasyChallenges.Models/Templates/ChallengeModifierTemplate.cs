@@ -11,6 +11,8 @@ public class ChallengeModifierTemplate
     public List<ModifierTemplate> Modifiers { get; set; } = new();
     public List<ArtifactTemplate> BanishedArtifacts = new();
     public List<ArtifactTemplate> StartingArtifacts = new();
+    public List<string> StartingCards = new();
+    public List<string> BanishedCards = new();
 
     public int MaxNumberOfWeapons = -1;
     public int MaxAllowedWeaponLevel = -1;
@@ -20,7 +22,7 @@ public class ChallengeModifierTemplate
     public bool NoSoulCardSelectionForStageReward = false;
     public bool NoEvolutions = false;
     public bool NoArtifacts = false;
-    public bool HiddenStage = false;
+    public bool StagesHidden = false;
 
     public float ExperienceMultiplier = 1f;
     public float GlobalStatsMultiplier = 1f;
@@ -59,7 +61,7 @@ public class ChallengeModifierTemplate
             EliteHealthMultiplier = this.EliteHealthMultiplier,
         };
 
-        challengeModifier.SetBoolModifier("HiddenStage", this.HiddenStage);
+        challengeModifier.SetBoolModifier("HiddenStage", this.StagesHidden);
 
         return challengeModifier;
     }

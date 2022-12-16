@@ -13,7 +13,8 @@ namespace EasyChallenges
         public override void Load()
         {
             HarmonyPatchHelper.ApplyPatches("EasyChallenges");
-            ChallengeLoader.LoadChallenges();
+            ChallengeEventHandler.Initialize();
+            ChallengeLoader.Initialize();
         }
 
         // public override string ModDescription() => $"Loaded challenges: 999";

@@ -23,6 +23,11 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 
 ## Changelog
 
+#### 1.0.1
+
+* Added `StagesHidden`, `StartingCards` and `BanishedCards` to `ChallengeModifiers`
+* `StartingCards` and `BanishedCards` have their own descriptions
+
 #### 1.0.0
 
 * Initial Release
@@ -86,6 +91,14 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
       // Defines the modifiers for your challenge
       // Required
       "ChallengeModifiers": {
+          // The player is given these cards at the start of the run
+          // Optional
+          "StartingCards": [ "EvilRing" ],
+
+          // These cards will be banished at the start of the run
+          // Optional
+          "BanishedCards": [ "Cardio" ],
+
           // Which artifacts should not be available in your challenge?
           // Optional
           "BanishedArtifacts": [ "PhoenixTotem" ],
@@ -153,6 +166,10 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
           // Multiply elite monster health by this value
           // Optional
           "EliteHealthMultiplier": 0.1,
+          
+          // Stages are on the map are replaced by question marks 
+          // Optional
+          "StagesHidden": false,
           
           // More fine grained control over what stats will be changed at the start of this run
           // Optional
