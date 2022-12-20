@@ -28,10 +28,12 @@ public static class CustomChallengeModifierHolder
 
     public static CustomChallengeDescription? GetStartingCardsDescription(string challengeName, List<string> cardNames)
     {
-        if (cardNames.Count == 0) return null;
+        if (cardNames.Count == 0)
+            return null;
 
         var localizedCardNames = GetLocalizedCardNames(cardNames);
-        if (localizedCardNames.Count == 0) return null;
+        if (localizedCardNames.Count == 0)
+            return null;
 
         var localizedCardNameString = string.Join(", ", localizedCardNames);
 
@@ -49,10 +51,12 @@ public static class CustomChallengeModifierHolder
 
     public static CustomChallengeDescription? GetBanishedCardsDescription(string challengeName, List<string> cardNames)
     {
-        if (cardNames.Count == 0) return null;
+        if (cardNames.Count == 0)
+            return null;
 
         var localizedCardNames = GetLocalizedCardNames(cardNames);
-        if (localizedCardNames.Count == 0) return null;
+        if (localizedCardNames.Count == 0)
+            return null;
 
         var localizedCardNameString = string.Join(", ", localizedCardNames);
 
@@ -76,10 +80,12 @@ public static class CustomChallengeModifierHolder
         foreach (var cardName in cardNames)
         {
             var cardSo = CardHelper.GetCardForName(cardName);
-            if (cardSo) startingCardSOList.Add(cardSo);
+            if (cardSo)
+                startingCardSOList.Add(cardSo);
         }
 
-        if (startingCardSOList.Count == 0) return new List<string>();
+        if (startingCardSOList.Count == 0)
+            return new List<string>();
 
         return startingCardSOList.ConvertAll(card => card.GetLocalizedName());
     }

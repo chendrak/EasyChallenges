@@ -24,7 +24,8 @@ internal static class ChallengeEventHandler
 
     private static void OnStageEntered()
     {
-        if (challengeCardsProcessed) return;
+        if (challengeCardsProcessed)
+            return;
 
         if (ChallengeData.InChallenge && ChallengeData.ActualChallenge)
         {
