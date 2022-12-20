@@ -1,0 +1,500 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TemplateFile",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "Schema": {
+      "type": "string"
+    },
+    "ModSource": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "Challenges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ChallengeTemplate"
+      }
+    }
+  },
+  "definitions": {
+    "ChallengeTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Difficulty": {
+          "$ref": "#/definitions/EDifficulty"
+        },
+        "ChallengeModifier": {
+          "$ref": "#/definitions/ChallengeModifierTemplate"
+        },
+        "SoulCoinModifier": {
+          "type": "number",
+          "format": "float"
+        },
+        "Order": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "IsHardMode": {
+          "type": "boolean"
+        },
+        "NameLocalization": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "Descriptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChallengeDescriptionTemplate"
+          }
+        }
+      }
+    },
+    "EDifficulty": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "NONE",
+        "F",
+        "E",
+        "D",
+        "C",
+        "B",
+        "A",
+        "S"
+      ],
+      "enum": [
+        "NONE",
+        "F",
+        "E",
+        "D",
+        "C",
+        "B",
+        "A",
+        "S"
+      ]
+    },
+    "ChallengeModifierTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "MaxAllowedSoulShopTier": {
+          "$ref": "#/definitions/ETier"
+        },
+        "MaxAllowedCardRarity": {
+          "$ref": "#/definitions/CardRarity"
+        },
+        "BanishedArtifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ArtifactTemplate"
+          }
+        },
+        "StartingArtifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ArtifactTemplate"
+          }
+        },
+        "MaxNumberOfWeapons": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "MaxAllowedWeaponLevel": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "EliteOnly": {
+          "type": "boolean"
+        },
+        "NoShop": {
+          "type": "boolean"
+        },
+        "NoSoulCardSelectionForStageReward": {
+          "type": "boolean"
+        },
+        "NoEvolutions": {
+          "type": "boolean"
+        },
+        "NoArtifacts": {
+          "type": "boolean"
+        },
+        "HiddenStage": {
+          "type": "boolean"
+        },
+        "ExperienceMultiplier": {
+          "type": "number",
+          "format": "float"
+        },
+        "GlobalStatsMultiplier": {
+          "type": "number",
+          "format": "float"
+        },
+        "EliteHealthMultiplier": {
+          "type": "number",
+          "format": "float"
+        },
+        "WeaponDropChance": {
+          "type": "number",
+          "format": "float"
+        },
+        "StartingCorruption": {
+          "type": "number",
+          "format": "float"
+        },
+        "CorruptionPerStage": {
+          "type": "number",
+          "format": "float"
+        },
+        "CorruptionPerZone": {
+          "type": "number",
+          "format": "float"
+        },
+        "HealthOnKill": {
+          "type": "number",
+          "format": "float"
+        },
+        "Modifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModifierTemplate"
+          }
+        }
+      }
+    },
+    "ETier": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "None",
+        "F",
+        "E",
+        "D",
+        "C",
+        "B",
+        "A",
+        "S",
+        "MAX"
+      ],
+      "enum": [
+        "None",
+        "F",
+        "E",
+        "D",
+        "C",
+        "B",
+        "A",
+        "S",
+        "MAX"
+      ]
+    },
+    "CardRarity": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "PLACEHOLDER_0",
+        "Tainted",
+        "PLACEHOLDER_1",
+        "PLACEHOLDER_2",
+        "Normal",
+        "PLACEHOLDER_3",
+        "PLACEHOLDER_4",
+        "Uncommon",
+        "PLACEHOLDER_5",
+        "PLACEHOLDER_6",
+        "Rare",
+        "PLACEHOLDER_7",
+        "Epic",
+        "Heroic",
+        "PLACEHOLDER_9",
+        "Ascended",
+        "Synergy",
+        "Evolution",
+        "NONE"
+      ],
+      "enum": [
+        "PLACEHOLDER_0",
+        "Tainted",
+        "PLACEHOLDER_1",
+        "PLACEHOLDER_2",
+        "Normal",
+        "PLACEHOLDER_3",
+        "PLACEHOLDER_4",
+        "Uncommon",
+        "PLACEHOLDER_5",
+        "PLACEHOLDER_6",
+        "Rare",
+        "PLACEHOLDER_7",
+        "Epic",
+        "Heroic",
+        "PLACEHOLDER_9",
+        "Ascended",
+        "Synergy",
+        "Evolution",
+        "NONE"
+      ]
+    },
+    "ArtifactTemplate": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "None",
+        "SoulGauntlet",
+        "MagnifyingGlass",
+        "GilgameshRing",
+        "GilgameshCrown",
+        "GilgameshSeal",
+        "MidasSword",
+        "TrainingWeight",
+        "PersonalTrainer",
+        "CheatingHand",
+        "PhoenixTotem",
+        "PocketHealer",
+        "MartyrCloak",
+        "SageLeaf",
+        "WindLace",
+        "GlassSword",
+        "ChronosLace",
+        "HolyCross",
+        "OuroborosNecklace",
+        "MithrilCompass",
+        "AdamantiteRod",
+        "SacredSword",
+        "LightningBoots",
+        "CursedBelt",
+        "HermesHood",
+        "ChampionBracer",
+        "BhikkhuPearl",
+        "CowardSaphir",
+        "BattleRuby",
+        "ChickenStatue",
+        "PorkStatue",
+        "BeefStatue",
+        "BlackSphereStatue",
+        "ShopKeeperPlate",
+        "AdventurerLicence",
+        "CollectionBook",
+        "Dice",
+        "TrollBlood",
+        "SheepStatue",
+        "CorruptedCore",
+        "WanderHelmet"
+      ],
+      "enum": [
+        "None",
+        "SoulGauntlet",
+        "MagnifyingGlass",
+        "GilgameshRing",
+        "GilgameshCrown",
+        "GilgameshSeal",
+        "MidasSword",
+        "TrainingWeight",
+        "PersonalTrainer",
+        "CheatingHand",
+        "PhoenixTotem",
+        "PocketHealer",
+        "MartyrCloak",
+        "SageLeaf",
+        "WindLace",
+        "GlassSword",
+        "ChronosLace",
+        "HolyCross",
+        "OuroborosNecklace",
+        "MithrilCompass",
+        "AdamantiteRod",
+        "SacredSword",
+        "LightningBoots",
+        "CursedBelt",
+        "HermesHood",
+        "ChampionBracer",
+        "BhikkhuPearl",
+        "CowardSaphir",
+        "BattleRuby",
+        "ChickenStatue",
+        "PorkStatue",
+        "BeefStatue",
+        "BlackSphereStatue",
+        "ShopKeeperPlate",
+        "AdventurerLicence",
+        "CollectionBook",
+        "Dice",
+        "TrollBlood",
+        "SheepStatue",
+        "CorruptedCore",
+        "WanderHelmet"
+      ]
+    },
+    "ModifierTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ModifierValue": {
+          "type": "number",
+          "format": "float"
+        },
+        "ModifierType": {
+          "$ref": "#/definitions/TemplateModifierType"
+        },
+        "Stat": {
+          "$ref": "#/definitions/TemplateStatsType"
+        }
+      }
+    },
+    "TemplateModifierType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Additional",
+        "Multiplier",
+        "Compound"
+      ],
+      "enum": [
+        "Additional",
+        "Multiplier",
+        "Compound"
+      ]
+    },
+    "TemplateStatsType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "MaxHealth",
+        "HealthRegen",
+        "Defence",
+        "DamageMitigation",
+        "XPMultiplier",
+        "PickUpDistance",
+        "AdditionalProjectile",
+        "ProjectilePiercing",
+        "ProjectileLifeTime",
+        "ProjectileSpeed",
+        "ProjectileSize",
+        "AreaSize",
+        "KnockBack",
+        "MoveSpeed",
+        "AttackCoolDown",
+        "AttackDelay",
+        "Damage",
+        "CriticalChance",
+        "CriticalMultiplier",
+        "DashSpeed",
+        "DashDuration",
+        "DashDelay",
+        "DashCoolDown",
+        "DashCharge",
+        "DashChargePerCoolDown",
+        "GoldMultiplier",
+        "SoulCoinMultiplier",
+        "DefencePiercing",
+        "Corruption",
+        "AnachronisticDurationMultiplier",
+        "CardDropChance_Tainted",
+        "CardDropChance_Normal",
+        "CardDropChance_Uncommon",
+        "CardDropChance_Rare",
+        "CardDropChance_Epic",
+        "CardDropChance_Heroic",
+        "CardDropChance_Ascended",
+        "CardDropChance_Synergy",
+        "CardDropChance_Evolution",
+        "CardDropChance_Moon",
+        "CardDropChance_Sun",
+        "CardDropChance_Fire",
+        "CardDropChance_Wind",
+        "CardDropChance_Hunt",
+        "CardDropChance_Wild",
+        "CardDropChance_Void",
+        "CardDropChance_Dark",
+        "CardDropChance_Metal"
+      ],
+      "enum": [
+        "MaxHealth",
+        "HealthRegen",
+        "Defence",
+        "DamageMitigation",
+        "XPMultiplier",
+        "PickUpDistance",
+        "AdditionalProjectile",
+        "ProjectilePiercing",
+        "ProjectileLifeTime",
+        "ProjectileSpeed",
+        "ProjectileSize",
+        "AreaSize",
+        "KnockBack",
+        "MoveSpeed",
+        "AttackCoolDown",
+        "AttackDelay",
+        "Damage",
+        "CriticalChance",
+        "CriticalMultiplier",
+        "DashSpeed",
+        "DashDuration",
+        "DashDelay",
+        "DashCoolDown",
+        "DashCharge",
+        "DashChargePerCoolDown",
+        "GoldMultiplier",
+        "SoulCoinMultiplier",
+        "DefencePiercing",
+        "Corruption",
+        "AnachronisticDurationMultiplier",
+        "CardDropChance_Tainted",
+        "CardDropChance_Normal",
+        "CardDropChance_Uncommon",
+        "CardDropChance_Rare",
+        "CardDropChance_Epic",
+        "CardDropChance_Heroic",
+        "CardDropChance_Ascended",
+        "CardDropChance_Synergy",
+        "CardDropChance_Evolution",
+        "CardDropChance_Moon",
+        "CardDropChance_Sun",
+        "CardDropChance_Fire",
+        "CardDropChance_Wind",
+        "CardDropChance_Hunt",
+        "CardDropChance_Wild",
+        "CardDropChance_Void",
+        "CardDropChance_Dark",
+        "CardDropChance_Metal"
+      ]
+    },
+    "ChallengeDescriptionTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Type": {
+          "$ref": "#/definitions/EDescriptionType"
+        },
+        "Localizations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "EDescriptionType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Negative",
+        "Neutral",
+        "Positive"
+      ],
+      "enum": [
+        "Negative",
+        "Neutral",
+        "Positive"
+      ]
+    }
+  }
+}

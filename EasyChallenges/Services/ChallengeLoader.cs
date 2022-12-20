@@ -35,7 +35,8 @@ public static class ChallengeLoader
     }
 
     private static CustomChallengeDescription GetModSourceDescription(string challengeName, string modSource) =>
-        new() {
+        new()
+        {
             DescriptionType = CustomChallengeDescription.EDescriptionType.Negative,
             Key = $"{challengeName}_ModSource",
             localization = Localization.GetTranslations(new()

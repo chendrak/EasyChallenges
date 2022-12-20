@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
 using EasyChallenges.EnumGenerator.EnumScannerModels;
+using Microsoft.CodeAnalysis;
 
 namespace EasyChallenges.EnumGenerator
 {

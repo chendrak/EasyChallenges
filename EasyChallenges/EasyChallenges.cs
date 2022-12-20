@@ -1,10 +1,10 @@
 using BepInEx;
+using BepInEx.Unity.IL2CPP;
 using EasyChallenges.Common.Helpers;
 using EasyChallenges.Helpers;
 using EasyChallenges.Services;
-using DLog = EasyChallenges.Common.Logging.Log;
-using BepInEx.Unity.IL2CPP;
 using SemanticVersioning;
+using DLog = EasyChallenges.Common.Logging.Log;
 
 namespace EasyChallenges
 {
