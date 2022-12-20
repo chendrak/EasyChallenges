@@ -23,6 +23,17 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 
 ## Changelog
 
+#### 1.0.3
+* Fix some documentation issues
+
+#### 1.0.2
+* Updated for the current beta
+* The mod now has version checks, so it will only load on supported game versions
+
+#### 1.0.1
+* Added `StagesHidden`, `StartingCards` and `BanishedCards` to `ChallengeModifiers`
+* `StartingCards` and `BanishedCards` have their own descriptions
+
 #### 1.0.0
 
 * Initial Release
@@ -70,22 +81,37 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
       // Optional
       "Descriptions": [
       {
-          "type": "Positive",
-          "en": "A description for a positive modifier"
+          "Type": "Positive",
+          "Localizations": { 
+              "en": "A description for a positive modifier",
+              "fr": "A french description"
+          }
       },
       {
-          "type": "Neutral",
-          "en": "A description for a neutral modifier"
+          "Type": "Neutral",
+          "Localizations": {
+              "en": "The Precursor for snuffheads favorite"
+          }
       },
       {
-          "type": "Negative",
-          "en": "A description for a negative modifier"
+          "Type": "Negative",
+          "Localizations": {
+              "en": "A description for a negative modifier"
+          }
       }
       ],
 
       // Defines the modifiers for your challenge
       // Required
       "ChallengeModifiers": {
+          // The player is given these cards at the start of the run
+          // Optional
+          "StartingCards": [ "EvilRing" ],
+
+          // These cards will be banished at the start of the run
+          // Optional
+          "BanishedCards": [ "Cardio" ],
+          
           // Which artifacts should not be available in your challenge?
           // Optional
           "BanishedArtifacts": [ "PhoenixTotem" ],
@@ -153,6 +179,10 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
           // Multiply elite monster health by this value
           // Optional
           "EliteHealthMultiplier": 0.1,
+
+          // Stages are on the map are replaced by question marks 
+          // Optional
+          "StagesHidden": false,
           
           // More fine grained control over what stats will be changed at the start of this run
           // Optional
@@ -206,7 +236,7 @@ Example:
 ```json
 {
     "Type": "Positive",
-    "Localizations": { "en": "Positive :)"}
+    "Localizations": { "en": "Positive :)" }
 }
 ```
 
@@ -217,7 +247,6 @@ Possible values: `Positive`, `Neutral`, `Negative`
 
 #### Localizations
 The translation text for your challenge.
-
 
 ### ChallengeModifier
 
@@ -282,23 +311,20 @@ Possible values: `0.1 or higher`
 #### StartingCorruption
 Start the run with this amount of corruption
 
-Possible values: `1 or higher`
-
 #### CorruptionPerStage
 Increase corruption by this amount after every stage
 
-Possible values: `1 or higher`
-
 #### CorruptionPerZone
 Increase corruption by this amount after killing the boss in each zone
-
-Possible values: `1 or higher`
 
 #### HealthOnKill
 Gain this much health after killing a monster.
 
 #### EliteHealthMultiplier
 All elite monsters' health is multiplied by this value.
+
+#### StagesHidden
+Stages on the map are replaced by question marks.
 
 #### Modifiers
 Specifies modifiers that the challenge applies to the players' stats.
@@ -319,11 +345,11 @@ Example:
 ##### Stat
 A stat that your challenge modifies.
 
-Possible values: `MaxHealth`, `HealthRegen`, `Defence`, `DamageMitigation`, `XPMultiplier`, `PickUpDistance`, `AdditionalProjectile`, `ProjectilePiercing`, `ProjectileLifeTime`, `ProjectileSpeed`, `ProjectileSize`, `AreaSize`, `KnockBack`, `MoveSpeed`, `AttackCoolDown`, `AttackDelay`, `Damage`, `CriticalChance`, `CriticalMultiplier`, `DashSpeed`, `DashDuration`, `DashDelay`, `DashCoolDown`, `DashCharge`, `DashChargePerCoolDown`, `GoldMultiplier`, `SoulCoinMultiplier`, `DefencePiercing`, `Corruption`
+Possible values: `MaxHealth`, `HealthRegen`, `Defence`, `DamageMitigation`, `XPMultiplier`, `PickUpDistance`, `AdditionalProjectile`, `ProjectilePiercing`, `ProjectileLifeTime`, `ProjectileSpeed`, `ProjectileSize`, `AreaSize`, `KnockBack`, `MoveSpeed`, `AttackCoolDown`, `AttackDelay`, `Damage`, `CriticalChance`, `CriticalMultiplier`, `DashSpeed`, `DashDuration`, `DashDelay`, `DashCoolDown`, `DashCharge`, `DashChargePerCoolDown`, `GoldMultiplier`, `SoulCoinMultiplier`, `DefencePiercing`, `Corruption`, `AnachronisticDurationMultiplier`, `CardDropChance_Tainted`, `CardDropChance_Normal`, `CardDropChance_Uncommon`, `CardDropChance_Rare`, `CardDropChance_Epic`, `CardDropChance_Heroic`, `CardDropChance_Ascended`, `CardDropChance_Synergy`, `CardDropChance_Evolution`, `CardDropChance_Moon`, `CardDropChance_Sun`, `CardDropChance_Fire`, `CardDropChance_Wind`, `CardDropChance_Hunt`, `CardDropChance_Wild`, `CardDropChance_Void`, `CardDropChance_Dark`, `CardDropChance_Metal`
 
 ##### ModifierType
 _How_ does your challenge modify a player stat?
 
 Possible values: `Additional`, `Multiplier`, `Compound`
 
-**NOTE:** For most multiplication cases, you will want to use `Compound`, especially for negative multiplisers.
+**NOTE:** For most multiplication cases, you will want to use `Compound`, especially for negative multipliers.
