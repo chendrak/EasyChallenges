@@ -10,19 +10,9 @@ public static class ChallengeTemplateExtensions
     {
         var statsMod = new StatsModifier();
 
-        // Add empty modifier so the game doesn't complain
-        if (challengeTemplate.Modifiers.Count == 0)
+        foreach (var modifier in challengeTemplate.Modifiers)
         {
-            var singMod = new SingularModifier { Value = 0.0f, ModifierType = ModifierType.Additional };
-            var statModifier = new StatModifier { Value = singMod, Key = StatsType.Damage.ToString() };
-            statsMod.ModifiersList.Add(statModifier);
-        }
-        else
-        {
-            foreach (var modifier in challengeTemplate.Modifiers)
-            {
-                statsMod.ModifiersList.Add(modifier.CreateStatModifier());
-            }
+            statsMod.ModifiersList.Add(modifier.CreateStatModifier());
         }
 
         return statsMod;

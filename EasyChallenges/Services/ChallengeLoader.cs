@@ -16,7 +16,18 @@ public static class ChallengeLoader
     private static Dictionary<string, ChallengeTemplate> successFullyLoadedChallenges = new();
     private static Dictionary<string, ChallengeTemplate> challengesThatFailedToLoad = new();
 
-    public static void LoadChallenges()
+    public static void Initialize()
+    {
+        GameEvents.OnGameLaunchEvent += OnGameStarted;
+    }
+
+    private static void OnGameStarted()
+    {
+        LoadChallenges();
+        GameData.LoadChallenges();
+    }
+
+    private static void LoadChallenges()
     {
         // Scan for *.cards.json files in plugins subfolders
         var challengeJsonFiles = Directory.GetFiles(Paths.Plugins, "*.challenges.json", SearchOption.AllDirectories);
@@ -24,8 +35,7 @@ public static class ChallengeLoader
         {
             try
             {
-                var assetPath = Path.GetDirectoryName(jsonFile);
-                AddChallengesFromFile(jsonFile, assetPath!);
+                AddChallengesFromFile(jsonFile);
             }
             catch (Exception ex)
             {
@@ -45,7 +55,7 @@ public static class ChallengeLoader
             }).ToIl2CppList()
         };
 
-    private static void AddChallengesFromFile(string fileName, string assetBasePath)
+    private static void AddChallengesFromFile(string fileName)
     {
         if (!File.Exists(fileName))
         {
@@ -64,12 +74,29 @@ public static class ChallengeLoader
         {
             Log.Info($"Attempting to add {template.Name}");
             var descCnt = 0;
-            var challengeDescriptions = template.Descriptions.ConvertAll(descriptionTemplate => new CustomChallengeDescription
+
+            var challengeDescriptions = new List<CustomChallengeDescription>();
+
+            var startingCardDescription = CustomChallengeModifierHolder.GetStartingCardsDescription(template.Name, template.ChallengeModifier.StartingCards);
+            if (startingCardDescription != null)
+            {
+                challengeDescriptions.Add(startingCardDescription);
+            }
+
+            var banishedCardDescription = CustomChallengeModifierHolder.GetBanishedCardsDescription(template.Name, template.ChallengeModifier.BanishedCards);
+            if (banishedCardDescription != null)
+            {
+                challengeDescriptions.Add(banishedCardDescription);
+            }
+
+            var convertedDescriptions = template.Descriptions.ConvertAll(descriptionTemplate => new CustomChallengeDescription
             {
                 DescriptionType = descriptionTemplate.Type,
                 Key = $"{template.Name}_{descCnt++}",
                 localization = Localization.GetChallengeDescriptionTranslations(descriptionTemplate).ToIl2CppList()
-            }).ToIl2CppList();
+            });
+
+            challengeDescriptions.AddRange(convertedDescriptions);
 
             var modNameChallengeDescription = GetModSourceDescription(template.Name, modSource);
 
@@ -84,8 +111,11 @@ public static class ChallengeLoader
                     challengeModifier, template.IsHardMode,
                     Localization.GetNameTranslations(template).ToIl2CppList(),
                     template.Order,
-                    challengeDescriptions
+                    challengeDescriptions.ToIl2CppList()
                 );
+
+                CustomChallengeModifierHolder.SetBanishedCardsForChallenge(template.Name, template.ChallengeModifier.BanishedCards);
+                CustomChallengeModifierHolder.SetStartingCardsForChallenge(template.Name, template.ChallengeModifier.StartingCards);
 
                 Log.Info($"Added challenge {template.Name}");
                 successFullyLoadedChallenges.Add(template.Name, template);
