@@ -11,6 +11,8 @@ public class ChallengeModifierTemplate
     public List<ModifierTemplate> Modifiers { get; set; } = new();
     public List<ArtifactTemplate> BanishedArtifacts = new();
     public List<ArtifactTemplate> StartingArtifacts = new();
+    public List<string> StartingCards = new();
+    public List<string> BanishedCards = new();
 
     public int MaxNumberOfWeapons = -1;
     public int MaxAllowedWeaponLevel = -1;

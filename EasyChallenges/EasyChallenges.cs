@@ -12,7 +12,7 @@ namespace EasyChallenges
     [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     public class EasyChallenges : BasePlugin
     {
-        private Version MinimumRequiredGameVersion = new(0, 8, 0);
+        private readonly Version MinimumRequiredGameVersion = new(0, 7, 2, preRelease: ".0b-beta");
 
         public override void Load()
         {
@@ -24,7 +24,9 @@ namespace EasyChallenges
             }
 
             HarmonyPatchHelper.ApplyPatches("EasyChallenges");
-            ChallengeLoader.LoadChallenges();
+
+            ChallengeEventHandler.Initialize();
+            ChallengeLoader.Initialize();
         }
 
         // public override string ModDescription() => $"Loaded challenges: 999";
