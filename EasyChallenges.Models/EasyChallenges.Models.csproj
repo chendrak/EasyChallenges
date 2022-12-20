@@ -4,7 +4,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>EasyChallenges.Models</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyChallenges.EnumGenerator\EasyChallenges.EnumGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
