@@ -61,12 +61,12 @@ jobs:
           dotnet build --nologo  /p:WarningLevel=0
       - name: Generate schema file
         run: |
-          dotnet run --project EasyCards.JsonSchemaGenerator -- "$(pwd)/docs/schema.json"
-          dotnet run --project EasyCards.JsonSchemaGenerator -- "$(pwd)/docs/schema.${{ github.run_number }}.json"
+          dotnet run --project EasyChallenges.JsonSchemaGenerator -- "$(pwd)/docs/schema.json"
+          dotnet run --project EasyChallenges.JsonSchemaGenerator -- "$(pwd)/docs/schema.${{ github.run_number }}.json"
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          commit_message: Card schema update
+          commit_message: Challenge schema update
           commit_user_name: GitHub Actions Schema Generator
       - uses: actions/upload-pages-artifact@main
         with:
