@@ -15,4 +15,7 @@ public static class CardHelper
 
     public static SoulCardScriptableObject? GetCardForName(string name) =>
         allCards.ContainsKey(name) ? allCards[name] : null;
+
+    public static List<SoulCardScriptableObject> GetCardsForStat(StatsType cardStat) =>
+        allCards.Values.Where(card => card.StatsModifier.ContainsKey(cardStat)).ToList();
 }

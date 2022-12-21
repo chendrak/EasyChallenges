@@ -3,7 +3,9 @@ namespace EasyChallenges.Services;
 using System.Collections.Generic;
 using Common.Extensions;
 using Helpers;
+using Models.Templates.Generated;
 using RogueGenesia.Data;
+using RogueGenesia.Localization;
 
 public static class CustomChallengeModifierHolder
 {
@@ -15,6 +17,16 @@ public static class CustomChallengeModifierHolder
 
     public static void SetBanishedCardsForChallenge(string challengeName, List<string> banishedCardNames) =>
         BanishedCardsForChallenge[challengeName] = banishedCardNames;
+
+    public static void AddBanishedCardsForChallenge(string challengeName, List<string> banishedCardNames)
+    {
+        if (!BanishedCardsForChallenge.ContainsKey(challengeName))
+        {
+            BanishedCardsForChallenge[challengeName] = new List<string>();
+        }
+
+        BanishedCardsForChallenge[challengeName].AddRange(banishedCardNames);
+    }
 
     public static List<string> GetStartingCardsForChallenge(string challengeName) =>
         StartingCardsForChallenge.TryGetValue(challengeName, out var startingCards)
@@ -67,6 +79,27 @@ public static class CustomChallengeModifierHolder
             {
                 ["en"] =
                     $"Banished cards: {RGRichText.DebuffLevel(localizedCardNameString)}"
+            }).ToIl2CppList()
+        );
+
+        return description;
+    }
+
+    public static CustomChallengeDescription? GetBanishedCardStatsDescription(string challengeName, List<TemplateStatsType> banishedStats)
+    {
+        if (banishedStats.Count == 0)
+            return null;
+
+        var localizedStatNames = banishedStats.ConvertAll(stat => LocalizationHandler.GetUILocalization(stat.ToString()));
+        var localizedStatNameString = string.Join(", ", localizedStatNames);
+
+        var description = ModGenesia.ChallengeAPI.BuildCustomChallengeDescription(
+            Key: $"{challengeName}_BanishedCardStats",
+            descriptionType: CustomChallengeDescription.EDescriptionType.Neutral,
+            localisedText: Localization.GetTranslations(new Dictionary<string, string>
+            {
+                ["en"] =
+                    $"Cards with the following stats are banished: {RGRichText.DebuffLevel(localizedStatNameString)}"
             }).ToIl2CppList()
         );
 
