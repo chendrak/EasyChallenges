@@ -24,6 +24,7 @@ public static class ChallengeLoader
 
     private static void OnGameStarted()
     {
+        Log.Info($"ChallengeLoader.OnGameStarted");
         LoadChallenges();
         GameData.LoadChallenges();
     }
@@ -125,15 +126,18 @@ public static class ChallengeLoader
 
                 CustomChallengeModifierHolder.SetBanishedCardsForChallenge(template.Name, template.ChallengeModifier.BanishedCards);
 
-                var banishedCardsByStat = template.ChallengeModifier.BanishedCardStats
-                    .SelectMany(stat => CardHelper.GetCardsForStat((StatsType)stat))
-                    .Select(card => card.name)
-                    .ToList();
-
-                if (banishedCardsByStat.Count > 0)
+                if (template.ChallengeModifier.BanishedCardStats.Count > 0)
                 {
-                    Log.Info($"Banished cards by stat: {banishedCardsByStat.Count}");
-                    CustomChallengeModifierHolder.AddBanishedCardsForChallenge(template.Name, banishedCardsByStat);
+                    var banishedCardsByStat = template.ChallengeModifier.BanishedCardStats
+                        .SelectMany(stat => CardHelper.GetCardsForStat((StatsType)stat))
+                        .Select(card => card.name)
+                        .ToList();
+
+                    if (banishedCardsByStat.Count > 0)
+                    {
+                        Log.Info($"Banished cards by stat: {banishedCardsByStat.Count}");
+                        CustomChallengeModifierHolder.AddBanishedCardsForChallenge(template.Name, banishedCardsByStat);
+                    }
                 }
 
                 CustomChallengeModifierHolder.SetStartingCardsForChallenge(template.Name, template.ChallengeModifier.StartingCards);
