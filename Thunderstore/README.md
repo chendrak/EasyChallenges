@@ -109,14 +109,17 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
       // Required
       "ChallengeModifier": {
           // The player is given these cards at the start of the run
+          // Note: These are only applied once you enter the first stage!
           // Optional
           "StartingCards": [ "EvilRing" ],
 
           // These cards will be banished at the start of the run
+          // Note: These are only applied once you enter the first stage!
           // Optional
           "BanishedCards": [ "Cardio" ],
 
           // Cards with these stats will be banished at the start of the run
+          // Note: These are only applied once you enter the first stage!
           // Optional
           "BanishedCardStats": [ "CriticalChance", "CriticalMultiplier" ],
           
