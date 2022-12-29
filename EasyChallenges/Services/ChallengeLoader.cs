@@ -3,6 +3,7 @@ namespace EasyChallenges.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Common;
 using Common.Extensions;
 using Common.Logging;
@@ -23,6 +24,7 @@ public static class ChallengeLoader
 
     private static void OnGameStarted()
     {
+        Log.Info($"ChallengeLoader.OnGameStarted");
         LoadChallenges();
         GameData.LoadChallenges();
     }
@@ -102,6 +104,14 @@ public static class ChallengeLoader
 
             challengeDescriptions.Add(modNameChallengeDescription);
 
+            var banishedStatsDesc = CustomChallengeModifierHolder.GetBanishedCardStatsDescription(template.Name,
+                template.ChallengeModifier.BanishedCardStats);
+
+            if (banishedStatsDesc != null)
+            {
+                challengeDescriptions.Add(banishedStatsDesc);
+            }
+
             try
             {
                 var challengeModifier = template.ChallengeModifier.ToChallengeModifier();
@@ -115,6 +125,21 @@ public static class ChallengeLoader
                 );
 
                 CustomChallengeModifierHolder.SetBanishedCardsForChallenge(template.Name, template.ChallengeModifier.BanishedCards);
+
+                if (template.ChallengeModifier.BanishedCardStats.Count > 0)
+                {
+                    var banishedCardsByStat = template.ChallengeModifier.BanishedCardStats
+                        .SelectMany(stat => CardHelper.GetCardsForStat((StatsType)stat))
+                        .Select(card => card.name)
+                        .ToList();
+
+                    if (banishedCardsByStat.Count > 0)
+                    {
+                        Log.Info($"Banished cards by stat: {banishedCardsByStat.Count}");
+                        CustomChallengeModifierHolder.AddBanishedCardsForChallenge(template.Name, banishedCardsByStat);
+                    }
+                }
+
                 CustomChallengeModifierHolder.SetStartingCardsForChallenge(template.Name, template.ChallengeModifier.StartingCards);
 
                 Log.Info($"Added challenge {template.Name}");

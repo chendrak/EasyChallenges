@@ -23,6 +23,10 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 
 ## Changelog
 
+#### 1.0.4
+* Fix more documentation issues
+* Add the ability to banish cards by stat using `BanishedCardStats`
+
 #### 1.0.3
 * Fix some documentation issues
 
@@ -31,7 +35,7 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 * The mod now has version checks, so it will only load on supported game versions
 
 #### 1.0.1
-* Added `StagesHidden`, `StartingCards` and `BanishedCards` to `ChallengeModifiers`
+* Added `StagesHidden`, `StartingCards` and `BanishedCards` to `ChallengeModifier`
 * `StartingCards` and `BanishedCards` have their own descriptions
 
 #### 1.0.0
@@ -103,14 +107,21 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 
       // Defines the modifiers for your challenge
       // Required
-      "ChallengeModifiers": {
+      "ChallengeModifier": {
           // The player is given these cards at the start of the run
+          // Note: These are only applied once you enter the first stage!
           // Optional
           "StartingCards": [ "EvilRing" ],
 
           // These cards will be banished at the start of the run
+          // Note: These are only applied once you enter the first stage!
           // Optional
           "BanishedCards": [ "Cardio" ],
+
+          // Cards with these stats will be banished at the start of the run
+          // Note: These are only applied once you enter the first stage!
+          // Optional
+          "BanishedCardStats": [ "CriticalChance", "CriticalMultiplier" ],
           
           // Which artifacts should not be available in your challenge?
           // Optional
@@ -259,6 +270,12 @@ Possible values: `SoulGauntlet`,`MagnifyingGlass`,`GilgameshRing`,`GilgameshCrow
 A list of artifacts that the player will start their run with.
 
 Possible values: `SoulGauntlet`,`MagnifyingGlass`,`GilgameshRing`,`GilgameshCrown`,`GilgameshSeal`,`MidasSword`,`TrainingWeight`,`PersonalTrainer`,`CheatingHand`,`PhoenixTotem`,`PocketHealer`,`MartyrCloak`,`SageLeaf`,`WindLace`,`GlassSword`,`ChronosLace`,`HolyCross`,`OuroborosNecklace`,`MithrilCompass`,`AdamantiteRod`,`SacredSword`,`LightningBoots`,`CursedBelt`,`HermesHood`,`ChampionBracer`,`BhikkhuPearl`,`CowardSaphir`,`BattleRuby`,`ChickenStatue`,`PorkStatue`,`BeefStatue`,`BlackSphereStatue`,`ShopKeeperPlate`,`AdventurerLicence`,`CollectionBook`,`Dice`,`TrollBlood`,`SheepStatue`,`CorruptedCore`,`WanderHelmet`
+
+##### BanishedCardStats
+Cards with these stats will be banished at the start of the run.
+
+Possible values: `MaxHealth`, `HealthRegen`, `Defence`, `DamageMitigation`, `XPMultiplier`, `PickUpDistance`, `AdditionalProjectile`, `ProjectilePiercing`, `ProjectileLifeTime`, `ProjectileSpeed`, `ProjectileSize`, `AreaSize`, `KnockBack`, `MoveSpeed`, `AttackCoolDown`, `AttackDelay`, `Damage`, `CriticalChance`, `CriticalMultiplier`, `DashSpeed`, `DashDuration`, `DashDelay`, `DashCoolDown`, `DashCharge`, `DashChargePerCoolDown`, `GoldMultiplier`, `SoulCoinMultiplier`, `DefencePiercing`, `Corruption`, `AnachronisticDurationMultiplier`, `CardDropChance_Tainted`, `CardDropChance_Normal`, `CardDropChance_Uncommon`, `CardDropChance_Rare`, `CardDropChance_Epic`, `CardDropChance_Heroic`, `CardDropChance_Ascended`, `CardDropChance_Synergy`, `CardDropChance_Evolution`, `CardDropChance_Moon`, `CardDropChance_Sun`, `CardDropChance_Fire`, `CardDropChance_Wind`, `CardDropChance_Hunt`, `CardDropChance_Wild`, `CardDropChance_Void`, `CardDropChance_Dark`, `CardDropChance_Metal`
+
 
 #### MaxAllowedCardRarity
 The player can not get cards higher than this rarity.

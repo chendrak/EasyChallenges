@@ -2,6 +2,7 @@ namespace EasyChallenges.Models.Templates;
 
 using Common.Extensions;
 using Extensions;
+using Generated;
 using RogueGenesia.Data;
 
 public class ChallengeModifierTemplate
@@ -13,6 +14,7 @@ public class ChallengeModifierTemplate
     public List<ArtifactTemplate> StartingArtifacts = new();
     public List<string> StartingCards = new();
     public List<string> BanishedCards = new();
+    public List<TemplateStatsType> BanishedCardStats = new();
 
     public int MaxNumberOfWeapons = -1;
     public int MaxAllowedWeaponLevel = -1;
