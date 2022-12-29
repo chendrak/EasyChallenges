@@ -23,6 +23,9 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 
 ## Changelog
 
+#### 1.0.5
+* Fix challenge completion resetting
+
 #### 1.0.4
 * Fix more documentation issues
 * Add the ability to banish cards by stat using `BanishedCardStats`

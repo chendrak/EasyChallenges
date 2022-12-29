@@ -27,6 +27,7 @@ public static class ChallengeLoader
         Log.Info($"ChallengeLoader.OnGameStarted");
         LoadChallenges();
         GameData.LoadChallenges();
+        GameData.LoadPersitentData();
     }
 
     private static void LoadChallenges()
