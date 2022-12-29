@@ -2,20 +2,16 @@ namespace EasyChallenges.Helpers;
 
 using System.Collections.Generic;
 using System.Linq;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using RogueGenesia.Data;
 
 public static class CardHelper
 {
-    private static Dictionary<string, SoulCardScriptableObject> allCards = new();
-
-    static CardHelper()
-    {
-        allCards = GameDataGetter.GetAllCards().ToDictionary(card => card.name, card => card);
-    }
+    private static Il2CppReferenceArray<SoulCardScriptableObject> allCards => GameDataGetter.GetAllCards();
 
     public static SoulCardScriptableObject? GetCardForName(string name) =>
-        allCards.ContainsKey(name) ? allCards[name] : null;
+        allCards.FirstOrDefault(card => card.name == name);
 
     public static List<SoulCardScriptableObject> GetCardsForStat(StatsType cardStat) =>
-        allCards.Values.Where(card => card.StatsModifier.ContainsKey(cardStat)).ToList();
+        allCards.Where(card => card.StatsModifier.ContainsKey(cardStat)).ToList();
 }
