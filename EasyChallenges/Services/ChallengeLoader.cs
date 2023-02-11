@@ -118,7 +118,7 @@ public static class ChallengeLoader
                 var challengeModifier = template.ChallengeModifier.ToChallengeModifier();
                 ChallengeAPI.AddCustomChallenge(
                     template.Name,
-                    nameof(GameData.EGameMode.RogMode),
+                    (int)template.GameMode,
                     (int)template.Difficulty - 1,
                     template.SoulCoinModifier,
                     challengeModifier, template.IsHardMode,
