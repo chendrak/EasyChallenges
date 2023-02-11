@@ -14,7 +14,7 @@ namespace EasyChallenges
     [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     public class EasyChallenges : BasePlugin
     {
-        private readonly Version MinimumRequiredGameVersion = new(0, 7, 2, preRelease: ".0b-beta");
+        private readonly Version MinimumRequiredGameVersion = new(0, 7, 6, preRelease: ".0");
 
         public override void Load()
         {
