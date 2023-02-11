@@ -26,7 +26,7 @@ public static class ChallengeLoader
     {
         Log.Info($"ChallengeLoader.OnGameStarted");
         LoadChallenges();
-        GameData.LoadChallenges();
+        GameData.RefreshDifficultyAndChallenges();
         GameData.LoadPersitentData();
     }
 
@@ -117,7 +117,9 @@ public static class ChallengeLoader
             {
                 var challengeModifier = template.ChallengeModifier.ToChallengeModifier();
                 ChallengeAPI.AddCustomChallenge(
-                    template.Name, template.Difficulty,
+                    template.Name,
+                    nameof(GameData.EGameMode.RogMode),
+                    (int)template.Difficulty - 1,
                     template.SoulCoinModifier,
                     challengeModifier, template.IsHardMode,
                     Localization.GetNameTranslations(template).ToIl2CppList(),
