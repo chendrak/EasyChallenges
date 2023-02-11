@@ -12,6 +12,8 @@ public class ChallengeTemplate
 
     public EDifficulty Difficulty = EDifficulty.F;
 
+    public GameData.EGameMode GameMode = GameData.EGameMode.RogMode;
+
     public ChallengeModifierTemplate ChallengeModifier;
 
     public float SoulCoinModifier = 1.0f;

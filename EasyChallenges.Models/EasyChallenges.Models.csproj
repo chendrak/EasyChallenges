@@ -10,7 +10,7 @@
     <ProjectReference Include="..\EasyChallenges.Common\EasyChallenges.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Il2CppInterop.Runtime" Version="1.4.*" />
+    <PackageReference Include="Il2CppInterop.Runtime" Version="1.3.0" />
     <PackageReference Include="RogueGenesia.Mod" Version="1.0.*" />
   </ItemGroup>
 </Project>

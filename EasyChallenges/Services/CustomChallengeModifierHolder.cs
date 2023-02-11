@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Common.Extensions;
 using Helpers;
 using Models.Templates.Generated;
+using RogueGenesia;
 using RogueGenesia.Data;
 using RogueGenesia.Localization;
 

@@ -1,6 +1,5 @@
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
-using EasyChallenges.Common.Helpers;
 using EasyChallenges.Helpers;
 using EasyChallenges.Services;
 using SemanticVersioning;
@@ -8,6 +7,9 @@ using DLog = EasyChallenges.Common.Logging.Log;
 
 namespace EasyChallenges
 {
+    using System.Reflection;
+    using HarmonyLib;
+
     [BepInDependency(DependencyGUID: "ModManager", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     public class EasyChallenges : BasePlugin
@@ -23,7 +25,7 @@ namespace EasyChallenges
                 return;
             }
 
-            HarmonyPatchHelper.ApplyPatches("EasyChallenges");
+            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
             ChallengeEventHandler.Initialize();
             ChallengeLoader.Initialize();

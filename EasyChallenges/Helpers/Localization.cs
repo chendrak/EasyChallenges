@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using BepInEx.Logging;
 using EasyChallenges.Models.Templates;
 using RogueGenesia.Data;
 
