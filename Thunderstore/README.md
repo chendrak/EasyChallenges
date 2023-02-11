@@ -23,6 +23,9 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 
 ## Changelog
 
+#### 1.0.7
+* Fix for game changes on how localization is handled
+
 #### 1.0.6
 * Fix for most recent game version
 
