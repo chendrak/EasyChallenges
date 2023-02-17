@@ -23,6 +23,11 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 
 ## Changelog
 
+#### 1.0.7
+* Fix for game changes on how localization is handled
+* Add ability to create Survivor Mode challenges
+* The Mod will now log the valid game modes and difficulties on startup
+
 #### 1.0.6
 * Fix for most recent game version
 
@@ -58,13 +63,17 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
       // Internal name of your new challenge. This needs to be unique.
       // Consider using a prefix for all your challenges.
       // Required
-      "Name": "CC_Challenge1", 
-      
-      // The difficulty this challenge will be shown under.
-      // Required
-      "Difficulty": "F",
-      
-      // The maximum allowed soul shop tier for your run.
+      "Name": "CC_Challenge1",
+
+        // The difficulty this challenge will be shown under.
+        // Required, will default to RogF if not provided
+        "Difficulty": "RogF",
+
+        // The difficulty this challenge will be shown under.
+        // Required, will default to "RogMode" if not provided
+        "GameMode": "RogMode",
+
+        // The maximum allowed soul shop tier for your run.
       // Optional, Default is MAX
       "MaxAllowedSoulShopTier": "F",
       
@@ -219,9 +228,14 @@ If there is no information in the logs, feel free to swing by the [Rogue: Genesi
 ## Challenge Properties
 
 ### Difficulty
-The game difficulty this game should be displayed under.
+The game difficulty this challenge should be displayed under.
 
-Possible values: `F`, `E`, `D`, `C`, `B`, `A`, `S`
+Possible values: `RogF`, `RogE`, `RogD`, `FSurv`, `ESurv`, `DSurv`
+
+### GameMode
+The game mode this challenge is for.
+
+Possible values: `RogMode`, `Survivors`
 
 ### MaxAllowedSoulShopTier
 The game difficulty this game should be displayed under.
