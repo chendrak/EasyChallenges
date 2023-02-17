@@ -10,9 +10,9 @@ public class ChallengeTemplate
 
     public List<ChallengeDescriptionTemplate> Descriptions { get; set; } = new();
 
-    public EDifficulty Difficulty = EDifficulty.F;
+    public string Difficulty = "RogF";
 
-    public GameData.EGameMode GameMode = GameData.EGameMode.RogMode;
+    public string GameMode = nameof(GameData.EGameMode.RogMode);
 
     public ChallengeModifierTemplate ChallengeModifier;
 

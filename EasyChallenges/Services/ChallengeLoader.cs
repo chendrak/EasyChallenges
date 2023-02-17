@@ -2,6 +2,7 @@ namespace EasyChallenges.Services;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Common;
@@ -17,9 +18,48 @@ public static class ChallengeLoader
     private static Dictionary<string, ChallengeTemplate> successFullyLoadedChallenges = new();
     private static Dictionary<string, ChallengeTemplate> challengesThatFailedToLoad = new();
 
+    private static Dictionary<string, int> validDifficulties = new();
+    private static Dictionary<string, int> validGameModes = new();
+
     public static void Initialize()
     {
+        initInternalLists();
         GameEvents.OnGameLaunchEvent += OnGameStarted;
+    }
+
+    private static void initInternalLists()
+    {
+        var gameModes = GameDataGetter.GetAllGameMode().ToImmutableList();
+
+        validDifficulties = gameModes
+            .SelectMany(gameMode => gameMode.DifficultyList.ToArray())
+            .ToDictionary(x => x.name, x => x.DifficultyID);
+
+        validGameModes = gameModes.ToDictionary(x => x.name, x => x.GameModeID);
+
+        Log.Info($"Valid Game Modes: {string.Join(", ", validGameModes.Keys)}");
+        Log.Info($"Valid Difficulties: {string.Join(", ", validDifficulties.Keys)}");
+    }
+
+    private static bool IsValidDifficulty(string difficulty) => validDifficulties.Keys.Contains(difficulty);
+    private static bool IsValidGameMode(string gameMode) => validGameModes.Keys.Contains(gameMode);
+
+    private static int fixDifficulty(string difficulty)
+    {
+        if (IsValidDifficulty(difficulty)) return validDifficulties[difficulty];
+        if (difficulty.Length == 1)
+        {
+            var fixedDifficulty = $"Rog{difficulty}";
+            if (IsValidDifficulty(fixedDifficulty)) return validDifficulties[fixedDifficulty];
+        }
+
+        return validDifficulties.Values.First();
+    }
+
+    private static int ensureGameMode(string gameMode)
+    {
+        if (IsValidGameMode(gameMode)) return validGameModes[gameMode];
+        return validGameModes.Values.First();
     }
 
     private static void OnGameStarted()
@@ -118,8 +158,8 @@ public static class ChallengeLoader
                 var challengeModifier = template.ChallengeModifier.ToChallengeModifier();
                 ChallengeAPI.AddCustomChallenge(
                     template.Name,
-                    (int)template.GameMode,
-                    (int)template.Difficulty - 1,
+                    ensureGameMode(template.GameMode),
+                    fixDifficulty(template.Difficulty),
                     template.SoulCoinModifier,
                     challengeModifier, template.IsHardMode,
                     Localization.GetNameTranslations(template).ToIl2CppList(),
