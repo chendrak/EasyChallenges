@@ -46,11 +46,13 @@ public static class ChallengeLoader
 
     private static int fixDifficulty(string difficulty)
     {
-        if (IsValidDifficulty(difficulty)) return validDifficulties[difficulty];
+        if (IsValidDifficulty(difficulty))
+            return validDifficulties[difficulty];
         if (difficulty.Length == 1)
         {
             var fixedDifficulty = $"Rog{difficulty}";
-            if (IsValidDifficulty(fixedDifficulty)) return validDifficulties[fixedDifficulty];
+            if (IsValidDifficulty(fixedDifficulty))
+                return validDifficulties[fixedDifficulty];
         }
 
         return validDifficulties.Values.First();
@@ -58,7 +60,8 @@ public static class ChallengeLoader
 
     private static int ensureGameMode(string gameMode)
     {
-        if (IsValidGameMode(gameMode)) return validGameModes[gameMode];
+        if (IsValidGameMode(gameMode))
+            return validGameModes[gameMode];
         return validGameModes.Values.First();
     }
 
