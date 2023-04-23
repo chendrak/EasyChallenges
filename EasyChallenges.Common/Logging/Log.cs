@@ -2,44 +2,67 @@ namespace EasyChallenges.Common.Logging;
 
 using System;
 using System.Collections.Generic;
-using BepInEx.Logging;
-using Common;
+using SLog = UnityEngine.Debug;
 
 /// <summary>
 /// Helper class that simplifies logging within your plugin.
 /// </summary>
 public static class Log
 {
-    private static readonly ManualLogSource logger;
-
-    static Log()
+    private static string Prefix = "CustomMod";
+    public enum LogLevel
     {
-        logger = Logger.CreateLogSource(ModInfo.ModName);
+        ERROR,
+        WARN,
+        INFO,
+        DEBUG,
+        VERBOSE
     }
 
-    public static void Info(object msg)
+    public static void Initialize(string prefix) => Prefix = prefix;
+
+    private static LogLevel logLevel = LogLevel.DEBUG;
+
+    public static void SetMinimumLogLevel(LogLevel logLevel)
     {
-        logger.LogInfo(msg);
+        Log.logLevel = logLevel;
     }
 
-    public static void Debug(object msg)
+    public static void Info(string msg)
     {
-        logger.LogDebug(msg);
+        if (logLevel >= LogLevel.INFO)
+        {
+            SLog.Log($"[{Prefix}] [INFO] {msg}");
+        }
     }
 
-    public static void Message(object msg)
+    public static void Debug(string msg)
     {
-        logger.LogMessage(msg);
+        if (logLevel >= LogLevel.DEBUG)
+        {
+            SLog.Log($"[{Prefix}] [DEBUG] {msg}");
+        }
     }
 
-    public static void Error(object msg)
+    public static void Error(string msg)
     {
-        logger.LogError(msg);
+        SLog.LogError($"[{Prefix}] [ERROR] {msg}");
     }
 
-    public static void Warn(object msg)
+    public static void Verbose(string msg)
     {
-        logger.LogWarning(msg);
+        if (logLevel >= LogLevel.VERBOSE)
+        {
+            SLog.Log($"[{Prefix}] [VERBOSE] {msg}");
+        }
+    }
+
+    public static void Warn(string msg)
+    {
+        if (logLevel >= LogLevel.WARN)
+        {
+            SLog.LogWarning($"[{Prefix}] [WARN] {msg}");
+        }
     }
 
     /// <summary>
@@ -55,12 +78,12 @@ public static class Log
         var values = new Dictionary<string, object>();
         Array.ForEach(fields, (field) =>
         {
-            values.TryAdd(field.Name, field.GetValue(data));
+            values.Add(field.Name, field.GetValue(data));
         });
 
         Array.ForEach(properties, (property) =>
         {
-            values.TryAdd(property.Name, property.GetValue(data));
+            values.Add(property.Name, property.GetValue(data));
         });
 
         var lines = new List<string>();

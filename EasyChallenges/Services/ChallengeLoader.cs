@@ -2,11 +2,8 @@ namespace EasyChallenges.Services;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using Common;
-using Common.Extensions;
 using Common.Logging;
 using Helpers;
 using Models.Templates;
@@ -21,15 +18,16 @@ public static class ChallengeLoader
     private static Dictionary<string, int> validDifficulties = new();
     private static Dictionary<string, int> validGameModes = new();
 
-    public static void Initialize()
+    public static void Initialize(List<string> modPaths)
     {
         initInternalLists();
-        GameEvents.OnGameLaunchEvent += OnGameStarted;
+
+        LoadChallenges(modPaths);
     }
 
     private static void initInternalLists()
     {
-        var gameModes = GameDataGetter.GetAllGameMode().ToImmutableList();
+        var gameModes = GameDataGetter.GetAllGameMode();
 
         validDifficulties = gameModes
             .SelectMany(gameMode => gameMode.DifficultyList.ToArray())
@@ -37,8 +35,8 @@ public static class ChallengeLoader
 
         validGameModes = gameModes.ToDictionary(x => x.name, x => x.GameModeID);
 
-        Log.Info($"Valid Game Modes: {string.Join(", ", validGameModes.Keys)}");
-        Log.Info($"Valid Difficulties: {string.Join(", ", validDifficulties.Keys)}");
+        Log.Debug($"Valid Game Modes: {string.Join(", ", validGameModes.Keys)}");
+        Log.Debug($"Valid Difficulties: {string.Join(", ", validDifficulties.Keys)}");
     }
 
     private static bool IsValidDifficulty(string difficulty) => validDifficulties.Keys.Contains(difficulty);
@@ -65,27 +63,24 @@ public static class ChallengeLoader
         return validGameModes.Values.First();
     }
 
-    private static void OnGameStarted()
+    private static void LoadChallenges(List<string> modPaths)
     {
-        Log.Info($"ChallengeLoader.OnGameStarted");
-        LoadChallenges();
-        GameData.RefreshDifficultyAndChallenges();
-        GameData.LoadPersitentData();
-    }
+        Log.Info("Attempting to find custom challenges");
 
-    private static void LoadChallenges()
-    {
-        // Scan for *.cards.json files in plugins subfolders
-        var challengeJsonFiles = Directory.GetFiles(Paths.Plugins, "*.challenges.json", SearchOption.AllDirectories);
-        foreach (var jsonFile in challengeJsonFiles)
+        foreach (var modPath in modPaths)
         {
-            try
+            // Scan for *.challenges.json files in mods subfolders
+            var challengeJsonFiles = Directory.GetFiles(modPath, "*.challenges.json", SearchOption.AllDirectories);
+            foreach (var jsonFile in challengeJsonFiles)
             {
-                AddChallengesFromFile(jsonFile);
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Unable to load challenges from file {jsonFile}: {ex}");
+                try
+                {
+                    AddChallengesFromFile(jsonFile);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Unable to load challenges from file {jsonFile}: {ex}");
+                }
             }
         }
     }
@@ -98,7 +93,7 @@ public static class ChallengeLoader
             localization = Localization.GetTranslations(new()
             {
                 ["en"] = $"Mod: {modSource}"
-            }).ToIl2CppList()
+            })
         };
 
     private static void AddChallengesFromFile(string fileName)
@@ -115,10 +110,10 @@ public static class ChallengeLoader
 
         Log.Info($"Loaded {templateFile.Challenges.Count} challenges");
 
-        var modSource = templateFile.ModSource ?? ModInfo.ModName;
+        var modSource = templateFile.ModSource ?? EasyChallenges.MOD_NAME;
         foreach (var template in templateFile.Challenges)
         {
-            Log.Info($"Attempting to add {template.Name}");
+            Log.Debug($"Attempting to add {template.Name}");
             var descCnt = 0;
 
             var challengeDescriptions = new List<CustomChallengeDescription>();
@@ -139,7 +134,7 @@ public static class ChallengeLoader
             {
                 DescriptionType = descriptionTemplate.Type,
                 Key = $"{template.Name}_{descCnt++}",
-                localization = Localization.GetChallengeDescriptionTranslations(descriptionTemplate).ToIl2CppList()
+                localization = Localization.GetChallengeDescriptionTranslations(descriptionTemplate)
             });
 
             challengeDescriptions.AddRange(convertedDescriptions);
@@ -159,15 +154,15 @@ public static class ChallengeLoader
             try
             {
                 var challengeModifier = template.ChallengeModifier.ToChallengeModifier();
-                ChallengeAPI.AddCustomChallenge(
+                var challengeSo = ChallengeAPI.AddCustomChallenge(
                     template.Name,
                     ensureGameMode(template.GameMode),
                     fixDifficulty(template.Difficulty),
                     template.SoulCoinModifier,
                     challengeModifier, template.IsHardMode,
-                    Localization.GetNameTranslations(template).ToIl2CppList(),
+                    Localization.GetNameTranslations(template),
                     template.Order,
-                    challengeDescriptions.ToIl2CppList()
+                    challengeDescriptions
                 );
 
                 CustomChallengeModifierHolder.SetBanishedCardsForChallenge(template.Name, template.ChallengeModifier.BanishedCards);
@@ -181,14 +176,14 @@ public static class ChallengeLoader
 
                     if (banishedCardsByStat.Count > 0)
                     {
-                        Log.Info($"Banished cards by stat: {banishedCardsByStat.Count}");
+                        Log.Debug($"Banished cards by stat: {banishedCardsByStat.Count}");
                         CustomChallengeModifierHolder.AddBanishedCardsForChallenge(template.Name, banishedCardsByStat);
                     }
                 }
 
                 CustomChallengeModifierHolder.SetStartingCardsForChallenge(template.Name, template.ChallengeModifier.StartingCards);
 
-                Log.Info($"Added challenge {template.Name}");
+                Log.Debug($"Added challenge {template.Name}");
                 successFullyLoadedChallenges.Add(template.Name, template);
             }
             catch (Exception ex)

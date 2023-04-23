@@ -1,54 +1,62 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <Description>Custom Challenges Made Easy</Description>
-        <Version>1.0.7</Version>
-        <LangVersion>latest</LangVersion>
-        <RootNamespace>EasyChallenges</RootNamespace>
-        <Nullable>enable</Nullable>
-        <Authors>chendrak</Authors>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Custom Challenges Made Easy</Description>
+    <Version>1.0.7</Version>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>EasyChallenges</RootNamespace>
+    <Nullable>enable</Nullable>
+    <Authors>chendrak</Authors>
+  </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyChallenges.Models\EasyChallenges.Models.csproj" />
+    <ProjectReference Include="..\EasyChallenges.Common\EasyChallenges.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ModGenesia">
+      <HintPath>$(BaseGameDirectory)\ModGenesia.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(BaseGameDirectory)\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RogueGenesia">
+      <HintPath>$(BaseGameDirectory)\RogueGenesia.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>$(BaseGameDirectory)\Unity.InputSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(BaseGameDirectory)\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(BaseGameDirectory)\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="PostPublishCleanup" AfterTargets="Publish">
     <ItemGroup>
-        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.662" IncludeAssets="compile" />
-        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
-        <PackageReference Include="RogueGenesia.Mod" Version="1.0.*" IncludeAssets="all" />
+      <!-- These are files that are unnecessary for the game, or are just not needed -->
+      <FilesToDelete Include="$(PublishDir)*.dll" Exclude="$(PublishDir)$(TargetName)*.dll" />
+      <!-- This is skipped in debug configuration, to make debugging plugins easier -->
+      <FilesToDelete Include="$(PublishDir)*.pdb" Condition="'$(Configuration)' == 'Release'" />
+      <FilesToDelete Include="$(PublishDir)*.deps.json" />
+      <DirectoriesToDelete Include="$(PublishDir)runtimes" />
     </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\EasyChallenges.Models\EasyChallenges.Models.csproj" />
-        <ProjectReference Include="..\EasyChallenges.Common\EasyChallenges.Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="ModManager.RogueGenesiaMod">
-        <HintPath>Libraries\ModManager.RogueGenesiaMod.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <Target Name="PostPublishCleanup" AfterTargets="Publish">
-        <ItemGroup>
-            <!-- These are files that are unnecessary for the game, or are just not needed -->
-            <FilesToDelete Include="$(PublishDir)0Harmony.dll" />
-            <FilesToDelete Include="$(PublishDir)*Il2Cpp*.dll" />
-            <FilesToDelete Include="$(PublishDir)*Unity*.dll" />
-            <FilesToDelete Include="$(PublishDir)Mono.*.dll" />
-            <FilesToDelete Include="$(PublishDir)MonoMod.*.dll" />
-            <FilesToDelete Include="$(PublishDir)RogueGenesia.dll" />
-            <FilesToDelete Include="$(PublishDir)ModGenesia*.dll" />
-            <FilesToDelete Include="$(PublishDir)RogueGenesia*.dll" />
-            <FilesToDelete Include="$(PublishDir)Newtonsoft.Json.dll" />
-            <FilesToDelete Include="$(PublishDir)Iced.dll" />
-            <FilesToDelete Include="$(PublishDir)Microsoft*.dll" />
-            <!-- This is skipped in debug configuration, to make debugging plugins easier -->
-            <FilesToDelete Include="$(PublishDir)*.pdb" Condition="'$(Configuration)' == 'Release'" />
-            <FilesToDelete Include="$(PublishDir)*.deps.json" />
-        </ItemGroup>
-        <Message Text="Deleting references and debug symbols from publish output" Importance="high" />
-        <Delete Files="@(FilesToDelete)" />
-    </Target>
-<!--    <Target Name="GenerateJsonSchema" AfterTargets="Publish">-->
-<!--        <Exec Command="$(ProjectDir)..\EasyChallenges.JsonSchemaGenerator\bin\$(Configuration)\net6.0\EasyChallenges.JsonSchemaGenerator $(PublishDir)Documentation\schema.json" ConsoleToMSBuild="true" />-->
-<!--    </Target>-->
+    <Message Text="Deleting references and debug symbols from publish output" Importance="high" />
+    <Delete Files="@(FilesToDelete)" />
+    <RemoveDir Directories="@(DirectoriesToDelete)" />
+  </Target>
+  <!--    <Target Name="GenerateJsonSchema" AfterTargets="Publish">-->
+  <!--        <Exec Command="$(ProjectDir)..\EasyChallenges.JsonSchemaGenerator\bin\$(Configuration)\net6.0\EasyChallenges.JsonSchemaGenerator $(PublishDir)Documentation\schema.json" ConsoleToMSBuild="true" />-->
+  <!--    </Target>-->
 </Project>
