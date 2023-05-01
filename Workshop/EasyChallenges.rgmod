@@ -14,10 +14,10 @@
 	"Version":"1.0.9",
 	"Name":"EasyChallenges",
 	"Author":"chendrak",
-	"WorkshopID":"",
+	"WorkshopID":"2968305217",
 	"HardDependencies":[],
 	"SoftDependencies":[],
 	"Tags":[
-		"challenges"
+		"Challenge"
 	],
 }
