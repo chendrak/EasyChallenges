@@ -1,9 +1,10 @@
 using EasyChallenges.Services;
-using DLog = EasyChallenges.Common.Logging.Log;
 
 namespace EasyChallenges
 {
     using System.Linq;
+    using Common.Logging;
+    using Helpers;
     using ModGenesia;
 
     public class EasyChallenges : RogueGenesiaMod
@@ -12,7 +13,10 @@ namespace EasyChallenges
 
         public EasyChallenges()
         {
-            DLog.Initialize(MOD_NAME);
+            ModOptionHelper.RegisterModOptions();
+            var logLevel = ModOptionHelper.AreDebugLogsEnabled() ? Log.LogLevel.DEBUG : Log.LogLevel.INFO;
+            Log.Initialize(MOD_NAME);
+            Log.SetMinimumLogLevel(logLevel);
         }
 
         public override void OnModLoaded(ModData modData)
@@ -26,6 +30,13 @@ namespace EasyChallenges
             var modPaths = ModLoader.EnabledMods.Select(mod => mod.ModDirectory.FullName).ToList();
             ChallengeEventHandler.Initialize();
             ChallengeLoader.Initialize(modPaths);
+        }
+
+        public override void OnModUnloaded()
+        {
+            Log.Debug("OnModUnloaded");
+            ChallengeEventHandler.Cleanup();
+            ChallengeLoader.Cleanup();
         }
     }
 }

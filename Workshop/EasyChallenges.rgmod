@@ -1,0 +1,23 @@
+{
+	"DisplayedName":[
+		{
+			"Key":"en",
+			"Value":"EasyChallenges"
+		}
+	],
+	"DisplayedDescription":[
+		{
+			"Key":"en",
+			"Value":"Allows modders to create custom challenges easily. Does nothing on its own!"
+		}
+	],
+	"Version":"1.0.8",
+	"Name":"EasyChallenges",
+	"Author":"chendrak",
+	"WorkshopID":"",
+	"HardDependencies":[],
+	"SoftDependencies":[],
+	"Tags":[
+		"challenges"
+	],
+}

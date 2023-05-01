@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Custom Challenges Made Easy</Description>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <LangVersion>latest</LangVersion>
     <RootNamespace>EasyChallenges</RootNamespace>
     <Nullable>enable</Nullable>
@@ -37,11 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <!-- Content to copy -->
+    <Content Include="../Workshop/**/*" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
   </ItemGroup>
+
 
   <Target Name="PostPublishCleanup" AfterTargets="Publish">
     <ItemGroup>

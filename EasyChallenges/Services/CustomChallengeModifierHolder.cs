@@ -121,6 +121,6 @@ public static class CustomChallengeModifierHolder
         if (startingCardSOList.Count == 0)
             return new List<string>();
 
-        return startingCardSOList.ConvertAll(card => card.GetLocalizedName());
+        return startingCardSOList.ConvertAll(card => card.GetName());
     }
 }
