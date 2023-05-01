@@ -193,4 +193,13 @@ public static class ChallengeLoader
             }
         }
     }
+
+    public static void Cleanup()
+    {
+        successFullyLoadedChallenges.Clear();
+        challengesThatFailedToLoad.Clear();
+
+        validDifficulties.Clear();
+        validGameModes.Clear();
+    }
 }
