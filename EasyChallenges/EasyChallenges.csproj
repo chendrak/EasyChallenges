@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Custom Challenges Made Easy</Description>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <LangVersion>latest</LangVersion>
     <RootNamespace>EasyChallenges</RootNamespace>
     <Nullable>enable</Nullable>
