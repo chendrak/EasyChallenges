@@ -1,6 +1,5 @@
 namespace EasyChallenges.Models.Templates;
 
-using Common.Extensions;
 using Extensions;
 using Generated;
 using RogueGenesia.Data;
@@ -44,8 +43,8 @@ public class ChallengeModifierTemplate
             ChallengeMaxAllowedSoulShopTier = this.MaxAllowedSoulShopTier,
             ChallengeMaxAllowedRarity = this.MaxAllowedCardRarity,
             StatsModifier = this.ConvertModifiersToStatsModifier(),
-            BannishedArtifacts = this.BanishedArtifacts.ConvertAll(template => (EArtifact)template).ToIl2CppList(),
-            BonusArtifacts = this.StartingArtifacts.ConvertAll(template => (EArtifact)template).ToIl2CppList(),
+            BannishedArtifacts = this.BanishedArtifacts.ConvertAll(template => template.ToString()),
+            BonusArtifacts = this.StartingArtifacts.ConvertAll(template => template.ToString()),
             ChallengeMaxAllowedWeapon = this.MaxNumberOfWeapons,
             ChallengeMaxAllowedWeaponLevel = this.MaxAllowedWeaponLevel,
             EliteOnly = this.EliteOnly,

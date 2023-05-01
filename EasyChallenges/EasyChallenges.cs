@@ -1,36 +1,31 @@
-using BepInEx;
-using BepInEx.Unity.IL2CPP;
-using EasyChallenges.Helpers;
 using EasyChallenges.Services;
-using SemanticVersioning;
 using DLog = EasyChallenges.Common.Logging.Log;
 
 namespace EasyChallenges
 {
-    using System.Reflection;
-    using HarmonyLib;
+    using System.Linq;
+    using ModGenesia;
 
-    [BepInDependency(DependencyGUID: "ModManager", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
-    public class EasyChallenges : BasePlugin
+    public class EasyChallenges : RogueGenesiaMod
     {
-        private readonly Version MinimumRequiredGameVersion = new(0, 7, 6, preRelease: ".0");
+        public const string MOD_NAME = "EasyChallenges";
 
-        public override void Load()
+        public EasyChallenges()
         {
-            if (!VersionHelper.IsGameVersionAtLeast(this.MinimumRequiredGameVersion))
-            {
-                DLog.Error($"Wrong game version! Minimum required game version is {this.MinimumRequiredGameVersion}, you have {VersionHelper.GameVersion}");
-                this.Unload();
-                return;
-            }
-
-            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-
-            ChallengeEventHandler.Initialize();
-            ChallengeLoader.Initialize();
+            DLog.Initialize(MOD_NAME);
         }
 
-        // public override string ModDescription() => $"Loaded challenges: 999";
+        public override void OnModLoaded(ModData modData)
+        {
+            // This needs to be the first line, because a bunch of stuff relies on the paths being initialized
+            Paths.Initialize(modData.ModDirectory);
+        }
+
+        public override void OnRegisterModdedContent()
+        {
+            var modPaths = ModLoader.EnabledMods.Select(mod => mod.ModDirectory.FullName).ToList();
+            ChallengeEventHandler.Initialize();
+            ChallengeLoader.Initialize(modPaths);
+        }
     }
 }

@@ -56,7 +56,7 @@ public static class CustomChallengeModifierHolder
             localisedText: Localization.GetTranslations(new Dictionary<string, string>
             {
                 ["en"] = $"Starting cards: {RGRichText.NextLevel(localizedCardNameString)}"
-            }).ToIl2CppList()
+            })
         );
 
         return description;
@@ -80,7 +80,7 @@ public static class CustomChallengeModifierHolder
             {
                 ["en"] =
                     $"Banished cards: {RGRichText.DebuffLevel(localizedCardNameString)}"
-            }).ToIl2CppList()
+            })
         );
 
         return description;
@@ -101,7 +101,7 @@ public static class CustomChallengeModifierHolder
             {
                 ["en"] =
                     $"Cards with the following stats are banished: {RGRichText.DebuffLevel(localizedStatNameString)}"
-            }).ToIl2CppList()
+            })
         );
 
         return description;
